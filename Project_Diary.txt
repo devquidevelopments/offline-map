@@ -1,5 +1,8 @@
 Project Diary
 
-13/10/2022	Couldn't log into Gitlab, need to contact helpdesk.
-		Looked at interim report template and created copy on uni onedrive
+13/10/2022	Couldn't log into Gitlab, need to contact helpdesk. (Solved)
+			Looked at interim report template and created copy on uni onedrive.
+			Started research on offline web applications.
+				IBM : https://developer.ibm.com/tutorials/x-html5mobile3/
+				
 		
