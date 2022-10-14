@@ -8,4 +8,5 @@ Project Diary
 			Cloned Gitlab repo to VSC
 
 14/10/2022	Cloned repo to PC to begin work at home.
-			
+			Started on first report.
+			Created separate branches for research reports and corresponding applications
