@@ -6,3 +6,6 @@ Project Diary
 				IBM : https://developer.ibm.com/tutorials/x-html5mobile3/
 				Codemag: https://www.codemag.com/article/1112051/Build-an-HTML5-Offline-Application-with-Application-Cache-Web-Storage-and-ASP.NET-MVC
 			Cloned Gitlab repo to VSC
+
+14/10/2022	Cloned repo to PC to begin work at home.
+			
