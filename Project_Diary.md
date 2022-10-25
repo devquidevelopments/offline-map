@@ -10,3 +10,14 @@ Project Diary
 14/10/2022	Cloned repo to PC to begin work at home.
 			Started on first report.
 			Created separate branches for research reports and corresponding applications
+
+25/10/2022	Working on html5 report POC.
+			Application-cache is no longer supported so looking into service workers.
+			Service workers rely on Promise.
+			Removed manifest files as service workers make this redundant.
+			Using https://css-tricks.com/serviceworker-for-offline/ to learn how service workers work.
+			Downloaded requirements for PWAs:
+				NodeJS.
+				NPM.
+			Start working through https://web.dev/learn/pwa/progressive-web-apps/
+			
