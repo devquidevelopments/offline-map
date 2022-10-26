@@ -21,3 +21,6 @@ Project Diary
 				NPM.
 			Start working through https://web.dev/learn/pwa/progressive-web-apps/
 			
+26/10/2022	Continue working through https://web.dev/learn/pwa/progressive-web-apps/.
+			Figured out how to run a npm local server relying on NodeJS.
+			learned how to clean server files for new live servers.
