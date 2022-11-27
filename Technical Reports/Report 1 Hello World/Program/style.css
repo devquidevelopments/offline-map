@@ -1,0 +1,17 @@
+body {
+    background-color: azure;
+}
+
+#pagetitle {
+    font-size: 50px;
+}
+
+p {
+    color: blue;
+}
+
+#globe {
+    border: 10px solid;
+    padding: 15px;
+    border-image: url(globe-512.png);
+}
