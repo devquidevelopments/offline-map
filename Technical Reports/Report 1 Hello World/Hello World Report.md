@@ -2,7 +2,7 @@ Technologies:
 NodeJS frontend
 begin by making directory
 ExpressJS backend
-npm install -g express-generator - installs expressjs
+npm install express - installs expressjs
 express helloWorld --view pug - creates expressjs server
 cd helloWorld
 npm install - install application dependencies
