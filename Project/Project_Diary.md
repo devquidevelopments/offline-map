@@ -25,4 +25,6 @@ Project Diary
 			Figured out how to run a npm local server relying on NodeJS.
 			learned how to clean server files for new live servers.
 
-26/11/2022	
+26/11/2022	Created Skeleton Application using NodeJS and ExpressJS
+			Researching routing using ExpressJS documentation: https://expressjs.com/en/guide/routing.html
+			
