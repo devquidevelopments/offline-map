@@ -1,4 +1,12 @@
 document.addEventListener('DOMContentLoaded', init, false);
+
+/**
+ * Attempts to register service worker for use by the application
+ * and logs the success/failure.
+ * 
+ * @author Adil Mushtaq
+ * 
+ */
 function init() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
