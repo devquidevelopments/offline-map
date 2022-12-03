@@ -1,3 +1,5 @@
+// Declares webapp's cache and the files to be added to application cache 
+// for use by the service worker.
 const CACHE_NAME = 'sw-cache-example';
 const toCache = [
     '/',
@@ -9,6 +11,10 @@ const toCache = [
     '/js/status.js'
 ];
 
+/**
+ * Registers the service worker and adds items from toCache to the webapp's
+ * cache.
+ */
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -19,6 +25,10 @@ self.addEventListener('install', function (event) {
     )
 })
 
+/**
+ * Tries to get requested file from the cache and if unavailable, returns from
+ * server.
+ */
 self.addEventListener('fetch', function (event) {
     event.respondWith(
         fetch(event.request)
@@ -31,6 +41,10 @@ self.addEventListener('fetch', function (event) {
     )
 })
 
+/**
+ * Activates up to date service worker and removes any existing ones from the
+ * cache.
+ */
 self.addEventListener('activate', function (event) {
     event.waitUntil(
         caches.keys()
