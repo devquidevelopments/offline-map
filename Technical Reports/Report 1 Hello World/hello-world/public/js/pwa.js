@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', init, false);
  * and logs the success/failure.
  * 
  * @author Adil Mushtaq
- * 
  */
 function init() {
     if ('serviceWorker' in navigator) {
