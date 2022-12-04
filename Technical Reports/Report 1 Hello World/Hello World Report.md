@@ -109,18 +109,37 @@ app.get('/', function(req, res) {
 })
 ```
 
-Now, when the user was to run `npm start` in the command line, the user would be able to see the main page when they go to localhost in their browser.
+Now, when the user was to run `npm start` in the command line, the user would be able to see the main page when they go to localhost in their browser. If they were to run the Lighthouse Audit on this application they would see a similar result to this (below).
+
+![1670175160051](image/HelloWorldReport/1670175160051.png)
+
+As seen, they are plenty of criteria that are not satisfied for the application to be classified as a PWA.
 
 ### 3.2.4 Completing Required Steps for a PWA
 
+To satisfy these criteria, it is easy to group them by what they require. For example, under the PWA optimisation subheading, the following are seen:
 
+* Does not set a theme colour for the address bar.
+* Content is not sized correctly for the viewport.
+* Does not have a `<meta name="viewport">` tag with `width` or `initial-scale`.
 
-pwa.js
+These can all be satisfied by making changes within the index.html file and adding the following lines which set the theme colour and scale the content for the device being used.
+
+```html
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#764ABC">
+```
+
+The next set of criteria focus on the implementation of a webmanifest which stores the details required for the installation of the PWA on a device. This includes: the name of the app, a short name (optional), description, any icons which will be used to display the app on the home screen/desktop of the device the app is installed on, the start_url, the type of display the app will take, and the global theme/background colour.
 
 pwa.webmanifest
+
 update index.html to use manifest
+
 globe images for splash screen and AHS
+
 HTTPS
+
 sw.js
 
 ### 3.2.5 Deploying the Web Application
