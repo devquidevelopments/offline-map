@@ -6,7 +6,7 @@ HyperText Markup Language (HTML) has been the standard language for web-based do
 # 1. Introduction
 PWAs are a relatively new concept and are commonly used for offline applications due to their ability to be published online but also installed to a user's device without the need for an application distribution such as the iOS App Store or the Google Play Store without compromising on functionality or security. A PWA also has to adhere to 8 key principles, some of which are crucial in the development of an offline web application.
 
-This report will discuss some of these principles and how they are important to the development of such an application as well as describing the steps involved. The development of an example "Hello World" PWA will then be documented with the technologies used and how the application aligns with the PWA criteria using Google Lighthouse.
+This report will discuss some of these principles and how they are important to the development of such an application as well as an overview of the steps involved. The development of an example "Hello World" PWA will then be documented with the technologies used and how the application aligns with the PWA criteria using Google Lighthouse.
 
 # 2. PWAs
 ## 2.1. Relevance of PWAs in this Project
@@ -22,15 +22,12 @@ The last principle is 'network independence' which is the application's ability 
 * The app can control what is shown to the user when there is no network connection.
 
 ## 2.2. Steps Required to Develop a PWA
-PWAs are relatively simple to develop with many tools available to assist developers during the whole process. The steps involved are:
-* Create project structure
-* Create content for webpages using HTML
-* Gather resources required (images etc.)
-* Design UI to display content in a responsive and aesthetic way using CSS
-* Use NodeJS with ExpressJS to host website locally to test content
-* Create manifest file to store content for offline usage
-    * Create splash screen
-
+PWAs are relatively simple to develop with tools available to assist developers during the whole process. The development of a PWA begins by creating an online local version of the web application while ensuring that it is 'responsively designed'. Once the developer has completed the app shell, they may build and run the application locally in the browser of their choice (except Firefox). They would then be able to inspect the page and utilise the Lighthouse tab to analyse their webapp.
+![1670119082453](image/HelloWorldReport/1670119082453.png)
+Once the analysis has been complete, they will be shown the websites score in specific categories (Performance, Accessibility, Best Practices and Search Engine Optimisation) as well as showing whether the application passes the criteria (displayed below) needed for a PWA.
+![1670118604795](image/HelloWorldReport/1670118604795.png)
+A PWA that has passed all these criteria will be shown this (below).
+![1670119587273](image/HelloWorldReport/1670119587273.png)
 # 3. Developing the Example Application
 The example "Hello World" application tries to implement some of the key principles described above 
 ## 3.1. Technologies used
