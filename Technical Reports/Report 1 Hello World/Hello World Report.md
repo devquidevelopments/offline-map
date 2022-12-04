@@ -101,15 +101,21 @@ The next stage of the project involved implementing the functionality of the app
 
 ![1670122694262](image/HelloWorldReport/1670122694262.png)![1670122804386](image/HelloWorldReport/1670122804386.png)
 
-ExpressJS was then installed with nodemon as the debugger using `npm install express nodemon` in the command line
-Nodemon
-npm install express nodemon
-"server-debug": "nodemon --inspect server.js"
-server.js
-pwa.js
-npm start
+ExpressJS was then installed as the HTTP server with nodemon as the debugger using `npm install express nodemon` in the command line. However, to set up Nodemon correctly, an additional line `"server-debug": "nodemon --inspect server.js"` was added to the package.json file. The server.js file acts as the main server for the application and deals with the requests with the port 80 sent to the localhost address. The following function directs the user to the main page when they type in localhost in their browser:
+
+```javascript
+app.get('/', function(req, res) {
+  res.sendFile(path.join(__dirname, 'public/index.html'))
+})
+```
+
+Now, when the user was to run `npm start` in the command line, the user would be able to see the main page when they go to localhost in their browser.
 
 ### 3.2.4 Completing Required Steps for a PWA
+
+
+
+pwa.js
 
 pwa.webmanifest
 update index.html to use manifest
