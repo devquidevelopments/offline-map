@@ -130,11 +130,11 @@ These can all be satisfied by making changes within the index.html file and addi
 <meta name="theme-color" content="#764ABC">
 ```
 
-The next set of criteria focus on the implementation of a webmanifest which stores the details required for the installation of the PWA on a device. This includes: the name of the app, a short name (optional), description, any icons which will be used to display the app on the home screen/desktop of the device the app is installed on, the start_url, the type of display the app will take, and the global theme/background colour.
+The next set of criteria focus on the implementation of a webmanifest which stores the details required for the installation of the PWA on a device. This includes: the name of the app, a short name (optional), description, any icons which will be used to display the app on the home screen/desktop of the device the app is installed on, the start_url, the type of display the app will take, and the global theme/background colour. This file should look something like this (below).
 
-pwa.webmanifest
+![1670176208019](image/HelloWorldReport/1670176208019.png)
 
-update index.html to use manifest
+This file would then have to be linked within the index.html file with the line `<linkrel="manifest"href="js/pwa.webmanifest">` to apply these changes. They would then have to add an additional line to declare the add-to-home-screen (AHS) icon
 
 globe images for splash screen and AHS
 
