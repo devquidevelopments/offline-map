@@ -9,8 +9,8 @@ const httpPort = 80
 const httpsPort = 443
 
 // Assigns SSL certificate to allow service workers to be used.
-const key = fs.readFileSync('./certs/hello-world.key');
-const cert = fs.readFileSync('./certs/hello-world.crt');
+const key = fs.readFileSync('./certs/server.key');
+const cert = fs.readFileSync('./certs/server.crt');
 
 // Creates application object and starts local app server.
 const app = express()
