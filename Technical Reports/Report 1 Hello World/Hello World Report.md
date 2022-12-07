@@ -32,6 +32,7 @@ PWAs are relatively simple to develop with tools available to assist developers 
 ![1670119082453](image/HelloWorldReport/1670119082453.png)
 Once the analysis has been complete, they will be shown the websites score in specific categories (Performance, Accessibility, Best Practices and Search Engine Optimisation) as well as showing whether the application passes the criteria (displayed below) needed for a PWA.
 ![1670118604795](image/HelloWorldReport/1670118604795.png)
+
 A PWA that has passed all these criteria will be shown this (below).
 ![1670119587273](image/HelloWorldReport/1670119587273.png)
 
