@@ -86,6 +86,7 @@ The content of the web page is shown in index.html. Here are the parts of the co
     <span>You are now</span> <span><b class="page-status">online</b></span>
     <p id="imgcaption">Here's an image</p>
     <img id="globe" src="images/globe-512.png" alt="Globe image">
+    <script src="/js/status.js"></script>
 </body>
 ```
 
@@ -93,7 +94,7 @@ This code creates a webpage which has the title 'Hello World' and the main headi
 
 ![1670121883012](image/HelloWorldReport/1670121883012.png)
 
-The body of the web page displays the network status of the application alongside a bordered image.
+The body of the web page displays the network status of the application alongside a bordered image. The network status is changed by the status.js file which changes the text if the network is offline.
 
 ### 3.2.3 Developing Locally Ran Application
 
@@ -101,11 +102,24 @@ The next stage of the project involved implementing the functionality of the app
 
 ![1670122694262](image/HelloWorldReport/1670122694262.png)![1670122804386](image/HelloWorldReport/1670122804386.png)
 
-ExpressJS was then installed as the HTTP server with nodemon as the debugger using `npm install express nodemon` in the command line. However, to set up Nodemon correctly, an additional line `"server-debug": "nodemon --inspect server.js"` was added to the package.json file. The server.js file acts as the main server for the application and deals with the requests with the port 80 sent to the localhost address. The following function directs the user to the main page when they type in localhost in their browser:
+ExpressJS was then installed as the HTTP server with nodemon as the debugger using `npm install express nodemon` in the command line. However, to set up Nodemon correctly, an additional line `"server-debug": "nodemon --inspect server.js"` was added to the package.json file (above). The server.js file (below) acts as the main server for the application and deals with the requests with the port 80 sent to the localhost address. The lines 10-12 directs the user to the main page when they type in localhost in their browser:
 
 ```javascript
+const express = require('express')
+const path = require('path')
+
+const httpPort = 80
+
+const app = express()
+
+app.use(express.static(path.join(__dirname, 'public')))
+
 app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname, 'public/index.html'))
+})
+
+app.listen(httpPort, function () {
+  console.log(`Listening on port ${httpPort}!`)
 })
 ```
 
@@ -134,26 +148,61 @@ The next set of criteria focus on the implementation of a webmanifest which stor
 
 ![1670176208019](image/HelloWorldReport/1670176208019.png)
 
-This file would then have to be linked within the index.html file with the line `<linkrel="manifest"href="js/pwa.webmanifest">` to apply these changes. They would then have to add an additional line to declare the add-to-home-screen (AHS) icon
+This file would then have to be linked within the index.html file with the line `<linkrel="manifest"href="js/pwa.webmanifest">` to apply these changes. They would then have to add an additional line to the index.html file to declare the add-to-home-screen (AHS)/apple touch icon.
 
-globe images for splash screen and AHS
+The application would then have to be served by HTTPS to be validated as a PWA as well as to register a service worker (SW) which allows the application to work offline. To do this, a self-signed certificate would have to be created as well as ensuring that all requests to the application would always be over HTTPS instead of HTTP. To do this, the following commands would have to be ran in an administator-approved command line.
 
-HTTPS
+```
+// Create RSA-2048 key with password
+openssl genrsa -des3 -out rootCA.key 2048
 
-sw.js
+// Create root certificate (Requires optional information)
+openssl req -x509 -new -nodes -key rootCA.key -sha256 -days 1460 -out rootCA.pem
+
+// Trust certificate locally
+certutil -addstore -f "ROOT" rootCA.pem
+```
+
+After this is done, an OpenSSL configuration file and a v3.ext file need to be made in order to run the following code:
+
+```
+// Create a private key and certificate-signing request (CSR) for the localhost certificate.
+openssl req -new -sha256 -nodes -out server.csr -newkey rsa:2048 -keyout server.key -config server.csr.cnf
+
+// Issues a certificate via the root SSL certificate and the CSR
+openssl x509 -req -in server.csr -CA rootCA.pem -CAkey rootCA.key -CAcreateserial -out server.crt -days 500 -sha256 -extfile v3.ext
+```
+
+The server.js file would then have to be updated in order to reflect this. A new file pwa.js would then finally be able to register the SW by adding implementing this function:
+
+```javascript
+function init() {
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js')
+      .then((reg) => {
+        console.log('Service worker registered -->', reg);
+      }, (err) => {
+        console.error('Service worker not registered -->', err);
+      });
+  }
+}
+```
+
+You would then have to assign this script to index.html by adding another `<script>` element: `<scriptsrc="js/pwa.js"></script>`. The last step is to write the code for the SW which includes: assigning files to be added to the cache, registering the sw and adding the files to the cache, updating the cache everytime the website is accessed while online, fetching requests from cache or network depending on the user's connection.
 
 ### 3.2.5 Deploying the Web Application
 
-Chrome and SSL certificates
-Add certificate to trusted.
-Override need for valid HTTPS certificate
+At this point the application is ready to be tested a final time. However, if the server is ran and tested on the browser, the SW would likely come up with a registration error as the certificate is self signed which means it would not be trusted by most web browsers. To avoid this Chrome would have to be ran with the following command:
 
-```
+```powershell
 chrome.exe --ignore-certificate-errors --unsafely-treat-insecure-origin-as-secure=https://localhost:443
 ```
+
+This command runs Chrome in a way in which it will ignore this error and register the SW as normal.
 
 ## 4. References
 
 [Introduction to progressive web apps - Progressive web apps (PWAs) | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Introduction#:~:text=An%20app%20could%20be%20considered,app%20is%2C%20such%20as%20Lighthouse.)
 [How to build a progressive web app (PWA) with Node.js - LogRocket Blog](https://blog.logrocket.com/how-to-build-a-progressive-web-app-pwa-with-node-js/)
-[Testing Service Workers locally with self signed certificates (deanhume.com)](https://deanhume.com/testing-service-workers-locally-with-self-signed-certificates/)
+[How to Create Trusted Self-Signed SSL Certificates and Local Domains for Testing
+](https://betterprogramming.pub/trusted-self-signed-certificate-and-local-domains-for-testing-7c6e6e3f9548)
