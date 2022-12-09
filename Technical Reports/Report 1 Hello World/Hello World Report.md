@@ -204,6 +204,7 @@ This command runs Chrome in a way in which it will ignore this error and registe
 ## 4. References
 
 [Introduction to progressive web apps - Progressive web apps (PWAs) | MDN (mozilla.org)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Introduction#:~:text=An%20app%20could%20be%20considered,app%20is%2C%20such%20as%20Lighthouse.)
+
 [How to build a progressive web app (PWA) with Node.js - LogRocket Blog](https://blog.logrocket.com/how-to-build-a-progressive-web-app-pwa-with-node-js/)
-[How to Create Trusted Self-Signed SSL Certificates and Local Domains for Testing
-](https://betterprogramming.pub/trusted-self-signed-certificate-and-local-domains-for-testing-7c6e6e3f9548)
+
+[How to Create Trusted Self-Signed SSL Certificates and Local Domains for Testing](https://betterprogramming.pub/trusted-self-signed-certificate-and-local-domains-for-testing-7c6e6e3f9548)
