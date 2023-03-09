@@ -10,6 +10,10 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public/home.html'));
 });
 
+app.get('/login', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public/login.html'));
+});
+
 app.listen(port, (error) => {
   if (!error)
     console.log("Server is Successfully Running, and App is listening on port " + port)
