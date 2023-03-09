@@ -2,11 +2,20 @@
 <html lang="en">
 
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Offline map application made by Adil Mushtaq (Devqui) as a part of their final year project">
     <title>Final Year Project</title>
+    <link rel="manifest" href="scripts/fyp.webmanifest">
+    <link rel="apple-touch-icon" href="images/global-512.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Offline map application made by Adil Mushtaq (Devqui) as a part of their final year project">
+    <meta name="theme-color" content="#764ABC">
     <style>
-        ul {
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        #navbar {
             position: fixed;
             top: 0;
             left: 0;
@@ -30,8 +39,8 @@
         li a {
             display: block;
             color: #666;
+            padding: 1em 1em;
             text-align: center;
-            padding: 14px 16px;
             text-decoration: none;
         }
 
@@ -39,7 +48,7 @@
             display: block;
             color: #666;
             text-align: center;
-            padding: 14px 16px;
+            padding: 1em 1em;
             text-decoration: none;
             font-size: 1em;
         }
@@ -48,31 +57,65 @@
             background-color: #ddd;
         }
 
-        .canvas-container {
+        li button {
+            padding: 0;
+            border: none;
+            background: none;
+        }
+
+        li img {
+            height: 1rem;
+            padding: 1em 1em;
+            width: auto;
+            margin: 0;
+            border: none;
+        }
+
+        /* #navbar.dark-mode {
+            background-color: black;
+            color: white;
+        }
+
+        #navbar.darkmode li a b .canvas-container {
+            left: 0;
+            top: 35px;
             width: 100%;
             height: 100%;
             overflow: auto;
             overflow-x: auto;
+        } */
+
+        .canvas-container {
+            padding-top: 3.2em;
         }
     </style>
 </head>
 
 <body>
-    <ul>
-        <li><b>Offline Web App</b></li>
-        <li><a href="#">Home</a></li>
-        <li style="float:right"><a href="#">Login</a></li>
+    <ul id="navbar">
+        <li>
+            <b href="/">Offline Web App</b>
+        </li>
+        <li style="float:right">
+            <a href="#">Login</a>
+        </li>
+        <!-- <li style="float:right">
+            <button type="button">
+                <img src="res/dark-mode.png" alt="button" onclick="darkMode()">
+            </button>
+        </li> -->
     </ul>
 
     <div class="canvas-container">
-        <canvas id="myCanvas" width="800" height="600"></canvas>
+        <canvas id="canvas" width="100%" height="100%"></canvas>
     </div>
 
+    <script src="scripts/fyp.js"></script>
     <script>
-        function myFunction() {
-            var element = document.body;
-            element.classList.toggle("dark-mode");
-        }
+        // function darkMode() {
+        //     var navbar = document.getElementById("navbar");
+        //     navbar.classList.toggle("dark-mode");
+        // }
     </script>
 </body>
 
