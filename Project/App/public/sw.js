@@ -2,6 +2,7 @@ const CACHE_NAME = 'fyp-cache';
 const toCache = [
     '/',
     '/home.html',
+    '/res/dark-mode.png',
     '/res/globe-192.png',
     '/res/globe-512.png',
     '/res/globe-vector.svg',
