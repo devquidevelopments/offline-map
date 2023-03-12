@@ -8,6 +8,7 @@ const toCache = [
     '/res/globe-vector.svg',
     '/scripts/fyp.js',
     '/scripts/fyp.webmanifest',
+    '/scripts/osm.js'
 ];
 
 self.addEventListener('install', function (event) {

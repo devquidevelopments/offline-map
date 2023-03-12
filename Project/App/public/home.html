@@ -71,24 +71,17 @@
             border: none;
         }
 
-        /* #navbar.dark-mode {
-            background-color: black;
-            color: white;
-        }
-
-        #navbar.darkmode li a b .canvas-container {
-            left: 0;
-            top: 35px;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            overflow-x: auto;
-        } */
-
         .canvas-container {
             padding-top: 3.2em;
             height: 100%;
             width: 100%;
+        }
+
+        #search-form {
+            position: relative;
+            top: 5em;
+            left: 5em;
+            z-index: 1;
         }
     </style>
 </head>
@@ -101,26 +94,17 @@
         <li style="float:right">
             <a href="#">Login</a>
         </li>
-        <!-- <li style="float:right">
-            <button type="button">
-                <img src="res/dark-mode.png" alt="button" onclick="darkMode()">
-            </button>
-        </li> -->
     </ul>
 
     <div class="canvas-container">
-        <canvas id="canvas" width="100%" height="100%">
-
-        </canvas>
+        <form id="search-form">
+            <input type="text" id="search-input" placeholder="Search for a location">
+            <button type="submit">Search</button>
+        </form>
+        <div id="map"></div>
     </div>
 
     <script src="scripts/fyp.js"></script>
-    <script>
-        // function darkMode() {
-        //     var navbar = document.getElementById("navbar");
-        //     navbar.classList.toggle("dark-mode");
-        // }
-    </script>
 </body>
 
 </html>

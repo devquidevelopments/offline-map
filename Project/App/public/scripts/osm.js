@@ -1,6 +1,4 @@
-const http = require('http');
-
-function getMapData(location, callback) {
+function getMapData(location, http, callback) {
     const endpoint = `https://nominatim.openstreetmap.org/search?q=${location}&format=json`;
 
     http.get(endpoint, (response) => {
