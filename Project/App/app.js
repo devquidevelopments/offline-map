@@ -1,6 +1,5 @@
 const express = require('express');
 const http = require('http');
-const osm = require('./public/scripts/osm');
 const app = express();
 const port = process.env.PORT || 3000;
 
