@@ -1,6 +1,4 @@
-// Get a reference to the map container element
 var mapContainer = document.getElementById('map');
-
 // Create a new Leaflet map instance and center it around the user's current location
 function initMap() {
     var map = L.map('map');
@@ -9,6 +7,7 @@ function initMap() {
             var lat = position.coords.latitude;
             var lng = position.coords.longitude;
             map.setView([lat, lng], 13);
+            L.marker({ lat, lng }).addTo(map);
         });
     } else {
         alert('Geolocation is not available');
@@ -17,6 +16,11 @@ function initMap() {
         maxZoom: 18,
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+    // map.locate({
+    //     setView: true,
+    //     watch: true,
+    //     maxZoom: 8
+    // })
 }
 
 // Wait for the DOM to load before initializing the map
