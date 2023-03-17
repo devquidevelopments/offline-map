@@ -1,7 +1,8 @@
 var mapContainer = document.getElementById('map');
 // Create a new Leaflet map instance and center it around the user's current location
 function initMap() {
-    var map = L.map('map');
+    var map = L.map('map', { zoomControl: false });
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
     if ('geolocation' in navigator) {
         navigator.geolocation.getCurrentPosition(function (position) {
             var lat = position.coords.latitude;
