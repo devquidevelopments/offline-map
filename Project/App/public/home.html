@@ -132,23 +132,23 @@
 
     navigator.geolocation.watchPosition(success, error, options)
 
-    let marker, circle, zoomed;
+    let user, acc, zoomed, search;
 
     function success(pos) {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
 
-        if (marker) {
-            map.removeLayer(marker);
-            map.removeLayer(circle);
+        if (user) {
+            map.removeLayer(user);
+            map.removeLayer(acc);
         }
 
-        marker = L.marker([lat, lng]).addTo(map);
-        circle = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+        user = L.marker([lat, lng]).addTo(map);
+        acc = L.circle([lat, lng], { radius: accuracy }).addTo(map);
 
         if (!zoomed) {
-            zoomed = map.fitBounds(circle.getBounds())
+            zoomed = map.fitBounds(acc.getBounds())
         }
 
         map.setView([lat, lng]);
@@ -161,6 +161,21 @@
             alert("Cannot get current location");
         }
     }
+
+    var geocoder = L.Control.geocoder({
+        defaultMarkGeocode: false
+    })
+        .on('markgeocode', function (e) {
+            var bbox = e.geocode.bbox;
+            var poly = L.polygon([
+                bbox.getSouthEast(),
+                bbox.getNorthEast(),
+                bbox.getNorthWest(),
+                bbox.getSouthWest()
+            ]).addTo(map);
+            map.fitBounds(poly.getBounds());
+        })
+        .addTo(map);
 </script>
 
 </html>
