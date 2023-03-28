@@ -7,7 +7,8 @@ const toCache = [
     '/res/globe-512.png',
     '/res/globe-vector.svg',
     '/scripts/fyp.js',
-    '/scripts/fyp.webmanifest'
+    '/scripts/fyp.webmanifest',
+    '/scripts/map.js'
 ];
 
 self.addEventListener('install', function (event) {
