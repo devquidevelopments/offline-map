@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Final Year Project</title>
+    <link rel="manifest" href="scripts/fyp.webmanifest">
+    <link rel="apple-touch-icon" href="images/global-512.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description"
+        content="Offline map application made by Adil Mushtaq (Devqui) as a part of their final year project">
+    <meta name="theme-color" content="#764ABC">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: calc(100% - 4em);
+        }
+
+        #navbar {
+            position: sticky;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            width: 100%;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            border-bottom: 1px solid #e7e7e7;
+            background-color: #f3f3f3;
+        }
+
+        li {
+            float: left;
+        }
+
+        li:last-child {
+            border-right: none;
+        }
+
+        li a {
+            display: block;
+            color: #666;
+            padding: 1em 1em;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        li b {
+            display: block;
+            color: #666;
+            text-align: center;
+            padding: 1em 1em;
+            text-decoration: none;
+            font-size: 1em;
+        }
+
+        li a:hover {
+            background-color: #ddd;
+        }
+
+        li button {
+            padding: 0;
+            border: none;
+            background: none;
+        }
+
+        li img {
+            height: 1rem;
+            padding: 1em 1em;
+            width: auto;
+            margin: 0;
+            border: none;
+        }
+
+        #map-canvas {
+            height: calc(100vh - 4em);
+            width: 100%;
+            z-index: 0;
+        }
+    </style>
+    <script src="scripts/fyp.js"></script>
+</head>
+
+<body>
+    <ul id="navbar">
+        <li>
+            <b href="/">Offline Web App</b>
+        </li>
+        <li style="float:right">
+            <a href="#">Login</a>
+        </li>
+    </ul>
+    <canvas id="map-canvas">
+
+    </canvas>
+</body>
+
+</html>
