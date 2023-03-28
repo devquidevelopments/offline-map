@@ -122,12 +122,17 @@
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
-    const options = {
+    const locOptions = {
         enableHighAccuracy: true,
         timeout: 5000
     }
 
-    navigator.geolocation.watchPosition(success, error, options)
+    const searchOptions = {
+        stroke: false,
+        fill: false
+    }
+
+    navigator.geolocation.watchPosition(success, error, locOptions)
 
     let user, acc, zoomed, search;
 
@@ -163,14 +168,18 @@
         defaultMarkGeocode: false
     })
         .on('markgeocode', function (e) {
+            if (search) {
+                map.removeLayer(search);
+            }
             var bbox = e.geocode.bbox;
-            var poly = L.polygon([
+            search = L.polygon([
                 bbox.getSouthEast(),
                 bbox.getNorthEast(),
                 bbox.getNorthWest(),
                 bbox.getSouthWest()
-            ]).addTo(map);
-            map.fitBounds(poly.getBounds());
+            ], searchOptions).addTo(map);
+            map.fitBounds(search.getBounds());
+
         })
         .addTo(map);
 </script>
