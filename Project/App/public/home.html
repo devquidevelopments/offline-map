@@ -15,6 +15,8 @@
         integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
     <style>
         body {
             padding: 0;
@@ -130,26 +132,28 @@
 
     navigator.geolocation.watchPosition(success, error, locOptions)
 
-    let user, acc, zoomed, search;
+    let loc, user, acc, zoomed, search, marker;
 
     function success(pos) {
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
 
+        loc = [lat, lng];
+
         if (user) {
             map.removeLayer(user);
             map.removeLayer(acc);
         }
 
-        user = L.marker([lat, lng]).addTo(map);
-        acc = L.circle([lat, lng], { radius: accuracy }).addTo(map);
+        user = L.marker(loc).addTo(map);
+        acc = L.circle(loc, { radius: accuracy }).addTo(map);
 
         if (!zoomed) {
             zoomed = map.fitBounds(acc.getBounds())
         }
 
-        map.setView([lat, lng]);
+        map.setView(loc);
     }
 
     function error(err) {
