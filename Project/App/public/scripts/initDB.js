@@ -7,7 +7,7 @@ request.onsuccess = function (event) {
 
 request.onupgradeneeded = function (event) {
     const db = event.target.result;
-    const objectStore = db.createObjectStore("tile", { keyPath: "url" });
+    const objectStore = db.createObjectStore("tiles", { keyPath: "url" });
 };
 
 request.onerror = function (event) {

@@ -107,18 +107,29 @@
             <a href="#">Login</a>
         </li>
     </ul>
-    <script src="scripts/initDB.js"></script>
     <div id="map"></div>
 </body>
 <script>
+    let db;
+    let request = indexedDB.open('mapTiles', 1);
+    let objectStore;
+
+    request.onsuccess = function (event) {
+        db = event.target.result;
+        console.log("Database opened successfully");
+    };
+
+    request.onupgradeneeded = function (event) {
+        const db = event.target.result;
+        objectStore = db.createObjectStore("tiles", { keyPath: "url" });
+    };
+
+    request.onerror = function (event) {
+        console.log("Database error: " + event.target.errorCode);
+    };
+
     var map = L.map('map', { zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
-
-    map.setView([51.505, -0.09], 13)
-    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: 18,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
 
     const locOptions = {
         enableHighAccuracy: true,
@@ -132,7 +143,7 @@
 
     navigator.geolocation.watchPosition(success, error, locOptions)
 
-    let loc, user, acc, zoomed, search, marker;
+    let loc, user, acc, zoomed, search, marker, loaded;
 
     function success(pos) {
         const lat = pos.coords.latitude;
@@ -141,6 +152,52 @@
 
         loc = [lat, lng];
 
+        map.setView(loc, 17);
+        var tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        })
+
+        function saveTiles(event) {
+            var tileUrl = event.tile.getAttribute('src');
+            var key = lat + ',' + lng + ',' + event.coords.z + ',' + event.coords.x + ',' + event.coords.y;
+            var save = `Saving tile with key: ${key}`;
+            console.log(save);
+
+            fetch(tileUrl)
+                .then(response => response.blob())
+                .then(imageBlob => {
+                    // Create an object to store in IndexedDB
+                    const imageData = {
+                        key: key,
+                        url: tileUrl,
+                        data: imageBlob
+                    };
+
+                    // Open a transaction on the database
+                    const transaction = db.transaction(['tiles'], 'readwrite');
+
+                    // Add the object to the object store
+                    objectStore = transaction.objectStore('tiles');
+                    const addRequest = objectStore.add(imageData);
+
+                    addRequest.onsuccess = () => {
+                        console.log('Tile stored successfully');
+                    };
+
+                    addRequest.onerror = () => {
+                        console.log('Tile already exists in database');
+                    };
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+            tileLayer.off('tileload', saveTiles);
+        }
+
+        tileLayer.on('tileload', saveTiles);
+
+        tileLayer.addTo(map);
         if (user) {
             map.removeLayer(user);
             map.removeLayer(acc);
