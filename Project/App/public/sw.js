@@ -8,7 +8,13 @@ const toCache = [
     '/res/globe-vector.svg',
     '/scripts/fyp.js',
     '/scripts/fyp.webmanifest',
-    '/scripts/initDB.js'
+    '/scripts/initDB.js',
+    'https://unpkg.com/leaflet@1.9.3/dist/leaflet.css',
+    'https://unpkg.com/leaflet@1.9.3/dist/leaflet.js',
+    'https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css',
+    'https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js',
+    'https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css',
+    'https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js'
 ];
 
 self.addEventListener('install', function (event) {

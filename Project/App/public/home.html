@@ -112,7 +112,6 @@
 <script>
     let db;
     let request = indexedDB.open('mapTiles', 1);
-    let objectStore;
 
     request.onsuccess = function (event) {
         db = event.target.result;
@@ -121,7 +120,7 @@
 
     request.onupgradeneeded = function (event) {
         const db = event.target.result;
-        objectStore = db.createObjectStore("tiles", { keyPath: "url" });
+        const objectStore = db.createObjectStore("tiles", { keyPath: "key" });
     };
 
     request.onerror = function (event) {
@@ -160,9 +159,7 @@
 
         function saveTiles(event) {
             var tileUrl = event.tile.getAttribute('src');
-            var key = lat + ',' + lng + ',' + event.coords.z + ',' + event.coords.x + ',' + event.coords.y;
-            var save = `Saving tile with key: ${key}`;
-            console.log(save);
+            var key = `${event.coords.z}/${event.coords.x}/${event.coords.y}.png`;
 
             fetch(tileUrl)
                 .then(response => response.blob())
@@ -170,15 +167,16 @@
                     // Create an object to store in IndexedDB
                     const imageData = {
                         key: key,
+                        coords: { lat, lng },
                         url: tileUrl,
-                        data: imageBlob
+                        img: imageBlob
                     };
 
                     // Open a transaction on the database
                     const transaction = db.transaction(['tiles'], 'readwrite');
 
                     // Add the object to the object store
-                    objectStore = transaction.objectStore('tiles');
+                    const objectStore = transaction.objectStore('tiles');
                     const addRequest = objectStore.add(imageData);
 
                     addRequest.onsuccess = () => {
@@ -192,10 +190,34 @@
                 .catch(error => {
                     console.error(error);
                 });
-            tileLayer.off('tileload', saveTiles);
         }
 
-        tileLayer.on('tileload', saveTiles);
+        function loadTiles(event) {
+            var tile = event.tile;
+            var tileUrl = tile.getAttribute('src');
+            var key = `${event.coords.z}/${event.coords.x}/${event.coords.y}.png`;
+
+            const transaction = db.transaction(['tiles'], 'readonly');
+            const objectStore = transaction.objectStore('tiles');
+            const keyrange = IDBKeyRange.only(key);
+            const request = objectStore.openCursor(keyrange);
+
+            request.onsuccess = (event) => {
+                const cursor = event.target.result;
+                if (cursor) {
+                    const tileData = Object.values(cursor.value);
+                    tile.src = URL.createObjectURL(tileData[3]);
+                    tileLayer.off('tileload', saveTiles);
+                    cursor.continue();
+                }
+            }
+
+            request.onerror = (event) => {
+                console.log(`Couldn't find tile with key: ${key}`);
+                tileLayer.on('tileload', saveTiles);
+            }
+        }
+        tileLayer.on('tileloadstart', loadTiles);
 
         tileLayer.addTo(map);
         if (user) {
