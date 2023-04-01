@@ -1,4 +1,5 @@
 const CACHE_NAME = 'fyp-cache';
+// Declares files and libraries required to be cached by the service worker.
 const toCache = [
     '/',
     '/home.html',
@@ -17,6 +18,7 @@ const toCache = [
     'https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js'
 ];
 
+// Event listener that installs the service worker and add the required files/libraries to the cache.
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -27,6 +29,7 @@ self.addEventListener('install', function (event) {
     )
 })
 
+// Event listener that gets cached files/libraries from the service worker if available.
 self.addEventListener('fetch', function (event) {
     event.respondWith(
         fetch(event.request)
@@ -39,6 +42,7 @@ self.addEventListener('fetch', function (event) {
     )
 })
 
+// Event listener ensure the existing cache is up to date and deletes any that are out of date.
 self.addEventListener('activate', function (event) {
     event.waitUntil(
         caches.keys()
