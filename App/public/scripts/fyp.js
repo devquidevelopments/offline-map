@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', init, false);
 
+// Registers the service worker.
 function init() {
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js')
