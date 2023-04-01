@@ -110,61 +110,78 @@
     <div id="map"></div>
 </body>
 <script>
+    // Attempts to open connection to indexedDB.
     let db;
     let request = indexedDB.open('mapTiles', 1);
 
+    // Stores connection at db variable if successful.
     request.onsuccess = function (event) {
         db = event.target.result;
         console.log("Database opened successfully");
     };
 
+    // Updates database and creates ObjectStore called tiles.
     request.onupgradeneeded = function (event) {
         const db = event.target.result;
         const objectStore = db.createObjectStore("tiles", { keyPath: "key" });
     };
 
+    // Declares error if connection is unsuccessful.
     request.onerror = function (event) {
         console.log("Database error: " + event.target.errorCode);
     };
 
+    // Creates map object and adds zoom control to the bottom right.
     var map = L.map('map', { zoomControl: false });
     L.control.zoom({ position: 'bottomright' }).addTo(map);
 
+    // Defines settings for user location tracking.
     const locOptions = {
         enableHighAccuracy: true,
         timeout: 5000
     }
 
+    // Defines settings for search result so that the box around the location isn't visible.
     const searchOptions = {
         stroke: false,
         fill: false
     }
 
-    navigator.geolocation.watchPosition(success, error, locOptions)
-
+    // Defines global variables to be used in the functions below.
     let loc, user, acc, zoomed, search, marker, loaded;
 
+    // Attempts to track the user's location using the geolocation API.
+    navigator.geolocation.watchPosition(success, error, locOptions)
+
+    // If user's location is found, the following function is carried out.
     function success(pos) {
+        // Stores the user's location in latitude and longitude as well as accuracy in metres.
         const lat = pos.coords.latitude;
         const lng = pos.coords.longitude;
         const accuracy = pos.coords.accuracy;
 
+        // Assigns an array to store user location.
         loc = [lat, lng];
 
+        // Set the map to center at the user's location.
         map.setView(loc, 17);
+
+        // Creates tileLayer for displaying the map data.
         var tileLayer = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         })
 
+        // Defines function that saves the tiles around the user to the indexedDB.
         function saveTiles(event) {
             var tileUrl = event.tile.getAttribute('src');
             var key = `${event.coords.z}/${event.coords.x}/${event.coords.y}.png`;
 
+            // Gets tile from OSM and attempts to save it to the indexedDB.
             fetch(tileUrl)
                 .then(response => response.blob())
                 .then(imageBlob => {
-                    // Create an object to store in IndexedDB
+                    // Create an data object to store in IndexedDB.
                     const imageData = {
                         key: key,
                         coords: { lat, lng },
@@ -172,17 +189,19 @@
                         img: imageBlob
                     };
 
-                    // Open a transaction on the database
+                    // Open a transaction on the database.
                     const transaction = db.transaction(['tiles'], 'readwrite');
 
-                    // Add the object to the object store
+                    // Attempts to add the object to the object store.
                     const objectStore = transaction.objectStore('tiles');
                     const addRequest = objectStore.add(imageData);
 
+                    // Defines function for successful saves.
                     addRequest.onsuccess = () => {
                         console.log('Tile stored successfully');
                     };
 
+                    // Defines function for errors in saving the tile to the database.
                     addRequest.onerror = () => {
                         console.log('Tile already exists in database');
                     };
@@ -192,16 +211,19 @@
                 });
         }
 
+        // Attempts to load map tile from indexedDB.
         function loadTiles(event) {
             var tile = event.tile;
             var tileUrl = tile.getAttribute('src');
             var key = `${event.coords.z}/${event.coords.x}/${event.coords.y}.png`;
 
+            // Attempts to locate tile using indexedDB cursor.
             const transaction = db.transaction(['tiles'], 'readonly');
             const objectStore = transaction.objectStore('tiles');
             const keyrange = IDBKeyRange.only(key);
             const request = objectStore.openCursor(keyrange);
 
+            // Loads tile to canvas if found and ensures that the tile is not saved to the indexedDB again.
             request.onsuccess = (event) => {
                 const cursor = event.target.result;
                 if (cursor) {
@@ -212,37 +234,48 @@
                 }
             }
 
+            // If tile isn't found in indexedDB, it is fetched from OSM and saveTiles is called on the tile.
             request.onerror = (event) => {
                 console.log(`Couldn't find tile with key: ${key}`);
                 tileLayer.on('tileload', saveTiles);
             }
         }
+
+        // Attempts to gather cached tiles from indexedDB.
         tileLayer.on('tileloadstart', loadTiles);
 
+        // Tiles (both cached and newly fetched tiles) are displayed on the map.
         tileLayer.addTo(map);
+
+        // Updates user marker positioning.
         if (user) {
             map.removeLayer(user);
             map.removeLayer(acc);
         }
 
+        // Creates marker at user location.
         user = L.marker(loc).addTo(map);
         acc = L.circle(loc, { radius: accuracy }).addTo(map);
 
+        // Zooms and pans to user location unless zoom level has been changed.
         if (!zoomed) {
             zoomed = map.fitBounds(acc.getBounds())
         }
 
+        // Centers map at user's location.
         map.setView(loc);
     }
 
+    // Handles errors in getting user's location.
     function error(err) {
-        if (err.code === 1) {
+        if (err.code === 1) { // If user did not allow location to be accessed.
             alert("Please enable location access");
-        } else {
+        } else { // Any other issues with user location.
             alert("Cannot get current location");
         }
     }
 
+    // Defines the search bar and allows the map to pan to search result if found.
     var geocoder = L.Control.geocoder({
         defaultMarkGeocode: false
     })
